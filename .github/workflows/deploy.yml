@@ -12,12 +12,13 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     steps:
-      - name: deploy
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
-        run: |
-          mkdir -p ~/.ssh
-          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H 5.161.104.141 >> ~/.ssh/known_hosts
-          echo "/var/www/testing-repo/deploy.sh" | ssh -i ~/.ssh/id_rsa root@5.161.104.141 'bash -s'
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Set up SSH agent
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_KEY }}
+
+      - name: Run deployment script
+        run: ssh -o StrictHostKeyChecking=no root@5.161.104.141 'bash -s' < /var/www/testing-repo/deploy.sh
