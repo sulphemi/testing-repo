@@ -20,5 +20,5 @@ jobs:
           mkdir -p ~/.ssh
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H your.server.com >> ~/.ssh/known_hosts
-          ssh -i ~/.ssh/id_rsa user@your.server.com 'bash -s' < /var/www/testing-repo/deploy.sh
+          ssh-keyscan -H 5.161.104.141 >> ~/.ssh/known_hosts
+          ssh -i ~/.ssh/id_rsa root@5.161.104.141 'bash -s' < /var/www/testing-repo/deploy.sh
